@@ -2,17 +2,19 @@ package com.tutorial.movies.rest.springboot.movies;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/movie")
 public class MoviesController {
+    MovieService movieService;
+    public MoviesController(MovieService ms) {
+        this.movieService = ms;
+    }
 
     @GetMapping(value = "/about")
     public String generalInformation() {
-        return "Movies encyclopedia at your fingertips.";
+        return movieService.generalInformation();
     }
 
     /** This will add GET end point.
@@ -21,7 +23,7 @@ public class MoviesController {
     @GetMapping(value = "/{id}")
     public ResponseEntity<Movie> getMovieData(@PathVariable("id") Integer id) {
         System.out.println("Received Movie ID:" + id);
-        return new ResponseEntity<>( moviesArray[id-1], HttpStatus.CREATED);
+        return new ResponseEntity<>( moviesArray[id-1], HttpStatus.OK);
     }
 
 
